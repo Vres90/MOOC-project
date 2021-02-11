@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragments :: head"></head>
+    <body>
+        <div th:replace="fragments/fragments :: panel"></div>
+        <div th:replace="fragments/fragments :: left"></div>
+        <div th:replace="fragments/fragments :: main(heading='&nbsp;',text='✢ ✣ ✤ ✥ ✦ ✧ ✩ ✪ ✫ ✬ ✭ ✮ ✯ ✰ ∰ ✢ ✣ ✤ ✥ ✦ ✧ ✩ ✪ ✫ ✬ ✭ ✮ ✯ ✰ ')"></div>
+        <div th:replace="fragments/fragments :: right"></div>
+        <script th:inline="javascript">var contextRoot = /*[[@{/}]]*/ '';</script>
+        <script th:src="@{/javascript/script.js}" defer></script>
+    </body>
+</html>

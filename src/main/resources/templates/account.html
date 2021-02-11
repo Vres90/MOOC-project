@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragments :: head"></head>
+    <body>
+        <div th:replace="fragments/fragments :: panel">
+        </div>
+        <div th:replace="fragments/fragments :: left">
+        </div>
+        <div class="main">
+            <table>
+                <tr>
+                    <th>
+                        <h2 th:text="${account?.firstName + ' ' + account?.lastName}"></h2>
+                    </th>
+                </tr>
+            </table>
+            <center>
+                <table class="accountProfile">
+                    <tr>
+                        <td>
+                            <img th:src="@{/account/} + ${account.username} + '/img'" width="100%" alt="account profile image"><br/>
+                                <form th:if="${account != null and account.username.equals(session.sesUsername)}" th:action="@{/uploadProfileImage}" method="POST" enctype="multipart/form-data">
+                                    <input type="file" name="file"/>
+                                    <input type="submit" value="Submit"/>
+                                </form>
+                        </td>
+                        <td>
+                            <span th:text="${account?.username}"></span><img th:if="${account != null and account.username.equals(session.sesUsername)}" th:src="@{/img/pen.png}" alt="ink pen" onclick="editField(this.id)" id="username"/><br/>
+                            <span th:text="${accountUserAge}" id="age"></span><!--<img th:if="${account != null and account.username.equals(session.sesUsername)}" th:src="@{/img/pen.png}" alt="ink pen" onclick="editField(this.id)" id="age"/>--><br/>
+                            <a th:href="@{${account.personalWebsiteAddress}}"><span th:text="${account?.personalWebsiteAddress}"></span></a> <img th:if="${account != null and account.username.equals(session.sesUsername)}" th:src="@{/img/pen.png}" alt="ink pen" onclick="editField(this.id)" id="personalWebsiteAddress"/><br/>
+
+                            <p th:text="${account?.biography}" id="bio">Write a biography</p>
+                            <img th:if="${account != null and account.username.equals(session.sesUsername)}" th:src="@{/img/pen.png}" alt="ink pen" onclick="editField(this.id)" id="biography"/>
+                            <table>
+                                <tr th:if="${account.skills != null}" th:each="skill : ${account.skills}">
+                                    <td>
+                                        <span th:text="${skill.key}">skill</span>
+                                        <form th:action="@{/account/likeskill}" method="POST">
+                                            <input type="hidden" name="skill" th:value="@{skill.key}"/>
+                                            <input type="hidden" name="liker" th:value="@{session.sesUsername}"/>
+                                            <input type="hidden" name="targetAccount" th:value="${account.username}"/>
+                                            <button type="submit">
+                                                <img th:src="@{/img/thumbsup.png}"/>
+                                            </button>
+                                        </form>
+
+                                        <span th:text="${skill.value}" class="small">amount of likes</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <span th:if="${account != null and !account.username.equals(session.sesUsername)}">
+                                <form th:action="@{/account/sendcontactrequest}" method="POST">
+                                    <input type="hidden" name="receiverUsername" th:value="${account?.username}"/>
+                                    <input type="submit" value="Send Contact Request"/>
+                                </form>
+                            </span>
+                            <table>
+                                <tr th:if="${account.contacts != null}" th:each="contact : ${account.contacts}">
+                                    <td>
+                                        <a th:href="@{/account/} + ${a.username}" target="_parent"><img class="profilePicThumbnail" th:src="@{/account/} + ${a.username} + '/img'"/></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+        <div th:replace="fragments/fragments :: right">
+        </div>
+        <script th:inline="javascript">var contextRoot = /*[[@{/}]]*/ '';</script>
+        <script th:src="@{/javascript/script.js}" defer></script>
+    </body>
+</html>

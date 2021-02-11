@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/fragments :: head"></head>
+    <body>
+        <div th:if="${session.sesUsername != null}" style="top:2px;">
+            <form th:action="@{/posts}" method="POST" name="newPost">
+                <input type="text" name="content" style="width:80%;"></input>
+                <button type="submit" value="Send">
+                    <img th:src="@{/img/sendPost.png}"></img>
+                </button>
+            </form>
+        </div>
+        <div>
+            <table th:if="${posts != null}" th:each="post : ${posts}">
+                <tr>
+                    <td>
+                        <a target="_parent" th:href="@{/account/} + ${post.author.username}"><span th:text="${post.author.firstName}" class="posterName"></span>
+                        <span th:text="${post.author.lastName}" class="posterName"></span></a><br/>
+                        <span th:text="${post.postDateTime}" class="small"></span><br/>
+                        <span th:text="${post.content}" class="postContent"></span><br/>
+                        <form th:action="@{/posts/likepost}" method="POST">
+                            <input type="hidden" name="liker" th:value="@{session.sesUsername}"/>
+                            <input type="hidden" name="id" th:value="${post.id}"/>
+                            <button type="submit">
+                                <img th:src="@{/img/thumbsup.png}"/>
+                            </button>
+                        </form>
+                        <span th:text="${post.likes}" class="small">amount of likes</span>
+                        <hr/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

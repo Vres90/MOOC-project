@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head">
+        <meta charset="UTF-8" />
+        <title>Workonnect - Networking Portal</title>
+        <link rel="shortcut icon" href="../favicon.ico"/>
+        <link rel="stylesheet" href="../css/main.css" type="text/css"/>
+    </head>
+    <body>
+
+        <!-- fragment for page's upper panel -->
+
+        <div th:fragment="panel" class="panel">
+            <h1>Workonnect</h1>
+            <img th:src="@{/img/ladybug.png}" alt="ladybug"/>
+            <img th:src="@{/img/formcheckmark.png}" alt="form symbol"/>
+            <span class="small" style="top:1px;">network for employees and jobseekers</span>
+
+            <nav role="navigation">
+                <ul>
+                    <li>
+                        <img alt="gears icon for menu link" src="../img/gears0.png" style="filter: invert(1)"/>
+                        <ul th:if="${session.sesUsername == null}">
+                            <span th:if="${session.loginerror != null}">Login not successful!</span>
+                            <b>
+                                Login to Workonnect
+                            </b>
+                            <form th:action="@{/login}" method="POST" name="login">
+                                <label>
+                                    Email address
+                                </label><br/>
+                                <input name="email" id="email" type="emailAddress"/><br/>
+                                <br/>
+                                <label>
+                                    Password
+                                </label><br/>
+                                <input name="password" id="password" type="text"/><br/>
+                                <br/>
+                                <button type="submit" value="Send" style="margin-top:2px;">Go!</button>
+                            </form>
+                            Don't have an account?
+                            <li>
+                                <a th:href="@{/register}">Register!</a>
+                            </li>
+                        </ul>
+                        <ul th:unless="${session.sesUsername == null}" class="loggedIn">
+                            <li><a th:href="@{/account/} + ${session.sesUsername}">Edit your details</a></li>
+                            <li><a th:href="@{/logout0}">Log out</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span th:text="${session.sesUsername}" class="loggedIn"></span>
+                        <a th:href="${session.sesUsername != null} ? @{/account/} + ${session.sesUsername} : @{/register}">
+                            <img alt="account icon or profile picture" th:src="@{/img/profile-default.png}"/>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/}">
+                            <img alt="home icon" th:src="@{/img/home.png}"/>
+                        </a>
+                    </li>
+                    <li th:if="${session.requests != null and not session.requests.isEmpty()}">
+                        <img th:src="@{/img/bell1.png}"/>
+                        <ul th:each="requester : ${session.requests}">
+                            <li>
+                            Accept <span th:text="${requester}">requester</span>'s contact request?<br/>
+                            <form th:action="@{/account/handlecontactrequest}" method="POST">
+                                <input type="hidden" th:name="requesterUsername" th:value="${requester}"/>
+                                <button name="i" value="1" type="submit">
+                                    <img th:src="@{/img/checkmark.png}">
+                                </button>
+                                <button name="i" value="0" type="submit">
+                                    <img th:src="@{/img/x.png}"/>
+                                </button>
+                            </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li th:unless="${session.requests != null and not session.requests.isEmpty()}">
+                        <img th:src="@{/img/bell0.png}"/>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- fragment for page's main content -->
+
+        <div th:fragment="left" class="left">
+            <table>
+                <tr>
+                    <th>
+                        <h2>
+                            Public Posts
+                        </h2>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="iframecontainer">
+                            <center>
+                                <iframe th:src="@{/posts}" scrolling="yes"></iframe>
+                            </center>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:fragment="main(heading, text)" class="main">
+            <table>
+                <tr>
+                    <th>
+                        <h2>
+                            <span th:text="${heading}">fragment main heading</span>
+                        </h2>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <main>
+                            <span th:text="${text}">fragment main text</span>
+                        </main>
+                        <section>
+                            <div onload="return fetch()"></div>
+                        </section>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div th:fragment="right" class="right">
+            <table>
+                <tr>
+                    <th>
+                        <h2>
+                            Users
+                        </h2>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <iframe th:src="@{/accounts}" scrolling="no"></iframe>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,13 @@
+projekti\Controllers\WorkonnectPostController.class
+projekti\WorkonnectApplication.class
+projekti\Services\AccountService.class
+projekti\MainSecurityConfiguration.class
+projekti\LocalSecurityConfiguration.class
+projekti\Entities\Post.class
+projekti\Controllers\WorkonnectAccountController.class
+projekti\Services\PostService.class
+projekti\Repositories\PostRepository.class
+projekti\Controllers\WorkonnectAuthController.class
+projekti\Entities\Account.class
+projekti\Entities\Contact.class
+projekti\Repositories\AccountRepository.class
